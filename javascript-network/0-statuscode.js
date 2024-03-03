@@ -1,3 +1,4 @@
+// 2-starwars_count.js
 const request = require('request');
 
 const apiUrl = process.argv[2];
@@ -12,9 +13,7 @@ request(apiUrl, function (error, response, body) {
   const films = JSON.parse(body).results;
   let count = 0;
 
-  // Iterate through each film
   films.forEach(film => {
-    // Check if the characters array includes the URL of Wedge Antilles
     if (film.characters.includes(`https://swapi-api.alx-tools.com/api/people/${wedgeAntillesId}/`)) {
       count++;
     }
