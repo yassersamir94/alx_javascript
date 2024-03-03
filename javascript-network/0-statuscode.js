@@ -15,7 +15,7 @@ request(apiUrl, function (error, response, body) {
 
   films.forEach(film => {
     film.characters.forEach(characterUrl => {
-      if (characterUrl === wedgeAntillesUrl) {
+      if (characterUrl.includes(wedgeAntillesUrl)) {
         count++;
       }
     });
