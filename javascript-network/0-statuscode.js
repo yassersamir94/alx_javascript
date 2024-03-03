@@ -13,12 +13,12 @@ request(apiUrl, function (error, response, body) {
   const films = JSON.parse(body).results;
   let count = 0;
 
+  // Loop through each film
   films.forEach(film => {
-    film.characters.forEach(characterUrl => {
-      if (characterUrl.includes(wedgeAntillesUrl)) {
-        count++;
-      }
-    });
+    // Check if Wedge Antilles URL is included in the characters array
+    if (film.characters.includes(wedgeAntillesUrl)) {
+      count++;
+    }
   });
 
   console.log(count);
