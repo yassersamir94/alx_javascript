@@ -10,12 +10,5 @@ request(url, (error, response, body) => {
     console.error(error);
     return;
   }
-
-  fs.writeFile(filePath, body, 'utf-8', (err) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    console.log(`File ${filePath} has been saved.`);
-  });
+  fs.writeFileSync(filePath, body, 'utf-8');
 });
