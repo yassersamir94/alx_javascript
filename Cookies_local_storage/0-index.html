@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #login-header {
+            font-weight: bold;
+            font-size: 24px;
+        }
+        #cookie-header {
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="login-header">Login to the website</h1>
+    <div>
+        <input type="text" id="firstname" placeholder="Firstname">
+        <input type="text" id="email" placeholder="Email">
+        <button onclick="setCookies()">Log me in</button>
+    </div>
+    <h2 id="cookie-header">Cookies</h2>
+    <button onclick="showCookies()">Show the cookies</button>
+    <script>
+        function setCookies() {
+            var firstnameValue = document.getElementById('firstname').value;
+            var emailValue = document.getElementById('email').value;
+            document.cookie = "firstname=" + firstnameValue;
+            document.cookie = "email=" + emailValue;
+        }
+
+        function showCookies() {
+            var cookiesParagraph = document.createElement('p');
+            cookiesParagraph.innerHTML = "Cookies: " + document.cookie;
+            document.body.appendChild(cookiesParagraph);
+        }
+    </script>
+</body>
+</html>
