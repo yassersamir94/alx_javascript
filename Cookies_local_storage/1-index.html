@@ -21,8 +21,11 @@
             const firstname = document.getElementById('firstname').value;
             const email = document.getElementById('email').value;
             
-            // Set expiration date 10 days from now
-            const expirationDate = new Date();
+            localStorage.setItem('firstname', firstname);
+            localStorage.setItem('email', email);
+
+             // Set expiration date 10 days from now
+             const expirationDate = new Date();
             expirationDate.setDate(expirationDate.getDate() + 10);
             const expires = expirationDate.toUTCString();
             
@@ -33,24 +36,13 @@
 
         function showCookies() {
             const cookiesParagraph = document.createElement('p');
-            const firstnameCookie = getCookie('firstname');
-            const emailCookie = getCookie('email');
+            const firstnameCookie = localStorage.getItem('firstname');
+            const emailCookie = localStorage.getItem('email');
             
             cookiesParagraph.textContent = 'Cookies:\n' +
-                'Firstname: ' + (firstnameCookie ? decodeURIComponent(firstnameCookie) : 'Not set') + '\n' +
-                'Email: ' + (emailCookie ? decodeURIComponent(emailCookie) : 'Not set');
+                'Firstname: ' + (firstnameCookie ? firstnameCookie : 'Not set') + '\n' +
+                'Email: ' + (emailCookie ? emailCookie : 'Not set');
             document.body.appendChild(cookiesParagraph);
-        }
-
-        function getCookie(name) {
-            const cookieArray = document.cookie.split(';');
-            for (let cookie of cookieArray) {
-                const [cookieName, cookieValue] = cookie.trim().split('=');
-                if (cookieName === name) {
-                    return cookieValue;
-                }
-            }
-            return null;
         }
     </script>
 </body>
