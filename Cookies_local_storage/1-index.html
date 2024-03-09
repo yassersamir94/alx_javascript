@@ -21,22 +21,24 @@
             const firstname = document.getElementById('firstname').value;
             const email = document.getElementById('email').value;
             
-            // Set the cookies to expire in 10 days
+            // Set expiration date 10 days from now
             const expirationDate = new Date();
             expirationDate.setDate(expirationDate.getDate() + 10);
-
-            // Set the cookies with an expiration date and a specific path
-            document.cookie = `firstname=${firstname}; expires=${expirationDate.toUTCString()}; path=/`;
-            document.cookie = `email=${email}; expires=${expirationDate.toUTCString()}; path=/`;
+            const expires = expirationDate.toUTCString();
+            
+            // Set the cookies with expiration date and specific path
+            document.cookie = `firstname=${encodeURIComponent(firstname)}; expires=${expires}; path=/`;
+            document.cookie = `email=${encodeURIComponent(email)}; expires=${expires}; path=/`;
         }
 
         function showCookies() {
-            const firstname = getCookie('firstname') || 'Not set';
-            const email = getCookie('email') || 'Not set';
             const cookiesParagraph = document.createElement('p');
+            const firstnameCookie = getCookie('firstname');
+            const emailCookie = getCookie('email');
+            
             cookiesParagraph.textContent = 'Cookies:\n' +
-                'Firstname: ' + firstname + '\n' +
-                'Email: ' + email;
+                'Firstname: ' + (firstnameCookie ? decodeURIComponent(firstnameCookie) : 'Not set') + '\n' +
+                'Email: ' + (emailCookie ? decodeURIComponent(emailCookie) : 'Not set');
             document.body.appendChild(cookiesParagraph);
         }
 
@@ -48,7 +50,7 @@
                     return cookieValue;
                 }
             }
-            return '';
+            return null;
         }
     </script>
 </body>

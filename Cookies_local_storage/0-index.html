@@ -20,31 +20,20 @@
         function setCookies() {
             const firstname = document.getElementById('firstname').value;
             const email = document.getElementById('email').value;
-
-            // Set the cookies
-            document.cookie = `firstname=${firstname}; path=/`;
-            document.cookie = `email=${email}; path=/`;
+            
+            localStorage.setItem('firstname', firstname);
+            localStorage.setItem('email', email);
         }
 
         function showCookies() {
-            const firstname = getCookie('firstname');
-            const email = getCookie('email');
             const cookiesParagraph = document.createElement('p');
+            const firstnameCookie = localStorage.getItem('firstname');
+            const emailCookie = localStorage.getItem('email');
+            
             cookiesParagraph.textContent = 'Cookies:\n' +
-                'Firstname: ' + (firstname ? firstname : 'Not set') + '\n' +
-                'Email: ' + (email ? email : 'Not set');
+                'Firstname: ' + (firstnameCookie ? firstnameCookie : 'Not set') + '\n' +
+                'Email: ' + (emailCookie ? emailCookie : 'Not set');
             document.body.appendChild(cookiesParagraph);
-        }
-
-        function getCookie(name) {
-            const cookieArray = document.cookie.split(';');
-            for (let cookie of cookieArray) {
-                const [cookieName, cookieValue] = cookie.trim().split('=');
-                if (cookieName === name) {
-                    return decodeURIComponent(cookieValue);
-                }
-            }
-            return null;
         }
     </script>
 </body>
