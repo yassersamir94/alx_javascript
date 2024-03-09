@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login to the website</title>
+</head>
+<body>
+    <h1 style="font-weight: bold; font-size: 24px;">Login to the website</h1>
+    <div>
+        <input type="text" id="firstname" placeholder="Firstname">
+        <input type="text" id="email" placeholder="Email">
+        <button onclick="setCookies()">Log me in</button>
+    </div>
+    <h2 style="font-weight: bold; font-size: 20px; margin-top: 20px;">Cookies</h2>
+    <button onclick="showCookies()">Show the cookies</button>
+
+    <!-- JavaScript code -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/src/js.cookie.min.js"></script>
+
+    <script>
+        function setCookies() {
+            const firstname = document.getElementById('firstname').value;
+            const email = document.getElementById('email').value;
+            
+            // Set cookies using js-cookie
+            Cookies.set('firstname', firstname, { expires: 10, path: '/' });
+            Cookies.set('email', email, { expires: 10, path: '/' });
+        }
+
+        function deleteCookiesAndShowForm() {
+            // Remove cookies using js-cookie
+            Cookies.remove('firstname', { path: '/' });
+            Cookies.remove('email', { path: '/' });
+
+            // Show form
+            showForm();
+        }
+    </script>
+</body>
+</html>
