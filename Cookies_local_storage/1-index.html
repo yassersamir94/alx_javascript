@@ -20,19 +20,23 @@
         function setCookies() {
             const firstname = document.getElementById('firstname').value;
             const email = document.getElementById('email').value;
+            
+            // Set the cookies to expire in 10 days
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + 10);
 
-            // Set the cookies
-            document.cookie = `firstname=${firstname}; path=/`;
-            document.cookie = `email=${email}; path=/`;
+            // Set the cookies with an expiration date and a specific path
+            document.cookie = `firstname=${firstname}; expires=${expirationDate.toUTCString()}; path=/`;
+            document.cookie = `email=${email}; expires=${expirationDate.toUTCString()}; path=/`;
         }
 
         function showCookies() {
-            const firstname = getCookie('firstname');
-            const email = getCookie('email');
+            const firstname = getCookie('firstname') || 'Not set';
+            const email = getCookie('email') || 'Not set';
             const cookiesParagraph = document.createElement('p');
             cookiesParagraph.textContent = 'Cookies:\n' +
-                'Firstname: ' + (firstname ? firstname : 'Not set') + '\n' +
-                'Email: ' + (email ? email : 'Not set');
+                'Firstname: ' + firstname + '\n' +
+                'Email: ' + email;
             document.body.appendChild(cookiesParagraph);
         }
 
@@ -41,10 +45,10 @@
             for (let cookie of cookieArray) {
                 const [cookieName, cookieValue] = cookie.trim().split('=');
                 if (cookieName === name) {
-                    return decodeURIComponent(cookieValue);
+                    return cookieValue;
                 }
             }
-            return null;
+            return '';
         }
     </script>
 </body>
