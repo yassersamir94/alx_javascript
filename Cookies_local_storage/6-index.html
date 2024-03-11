@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+</head>
+<body>
+    <h1>Shopping Cart</h1>
+    <div id="item-list"></div>
+    <p id="cart-summary"></p>
+
+    <script>
+        // Array of available items
+        const availableItems = ['Shampoo', 'Soap', 'Sponge', 'Water'];
+
+        // Function to add item to cart
+        function addItemToCart(item) {
+            sessionStorage.setItem(item, 'true');
+            displayCart();
+        }
+
+        // Function to create the store
+        function createStore() {
+            const itemList = document.getElementById('item-list');
+
+            availableItems.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = item;
+                listItem.addEventListener('click', () => addItemToCart(item));
+                itemList.appendChild(listItem);
+            });
+        }
+
+        // Function to display the cart summary
+        function displayCart() {
+            const cartSummary = document.getElementById('cart-summary');
+            const cartItems = Object.keys(sessionStorage);
+
+            if (cartItems.length === 0) {
+                cartSummary.textContent = '';
+            } else {
+                cartSummary.textContent = `You previously had ${cartItems.length} item(s) in your cart.`;
+            }
+        }
+
+        // Build the store and display cart
+        createStore();
+        displayCart();
+    </script>
+</body>
+</html>

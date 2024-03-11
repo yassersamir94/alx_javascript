@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Cart System</title>
+</head>
+<body>
+    <h2>Available Products:</h2>
+    <ul id="available-products"></ul>
+
+    <h2>Your Cart:</h2>
+    <div id="cart"></div>
+
+    <script>
+        const availableItems = ['Shampoo', 'Soap', 'Sponge', 'Water'];
+
+        function getCartFromStorage() {
+            const cart = sessionStorage.getItem('cart');
+            return cart ? JSON.parse(cart) : {};
+        }
+
+        function addItemToCart(item) {
+            const cart = getCartFromStorage();
+            cart[item] = cart[item] ? cart[item] + 1 : 1;
+            sessionStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        function removeItemFromCart(item) {
+            const cart = getCartFromStorage();
+            delete cart[item];
+            sessionStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        function clearCart() {
+            sessionStorage.removeItem('cart');
+            displayCart();
+        }
+
+        function createStore() {
+            const productList = document.getElementById('available-products');
+            availableItems.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = item;
+                listItem.addEventListener('click', () => addItemToCart(item));
+                productList.appendChild(listItem);
+            });
+        }
+
+        function displayCart() {
+            const cartDiv = document.getElementById('cart');
+            cartDiv.innerHTML = '';
+
+            const cart = getCartFromStorage();
+            if (Object.keys(cart).length === 0) {
+                const emptyCartMsg = document.createElement('p');
+                emptyCartMsg.textContent = 'Your cart is empty.';
+                cartDiv.appendChild(emptyCartMsg);
+            } else {
+                const cartList = document.createElement('ul');
+                for (const item in cart) {
+                    const cartItem = document.createElement('li');
+                    cartItem.textContent = `${item} x ${cart[item]} `;
+                    const removeLink = document.createElement('a');
+                    removeLink.textContent = '(remove)';
+                    removeLink.href = '#';
+                    removeLink.addEventListener('click', () => removeItemFromCart(item));
+                    cartItem.appendChild(removeLink);
+                    cartList.appendChild(cartItem);
+                }
+
+                const clearCartBtn = document.createElement('li');
+                const clearCartLink = document.createElement('a');
+                clearCartLink.textContent = 'Clear my cart';
+                clearCartLink.href = '#';
+                clearCartLink.addEventListener('click', clearCart);
+                clearCartBtn.appendChild(clearCartLink);
+                cartList.insertBefore(clearCartBtn, cartList.firstChild);
+
+                cartDiv.appendChild(cartList);
+            }
+        }
+
+        // Initialize
+        createStore();
+        displayCart();
+    </script>
+</body>
+</html>

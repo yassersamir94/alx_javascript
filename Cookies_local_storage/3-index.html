@@ -7,76 +7,68 @@
 </head>
 <body>
     <h1 style="font-weight: bold; font-size: 24px;">Login to the website</h1>
-    <div>
+    <div id="login-form">
+        <h2>Login Form</h2>
         <input type="text" id="firstname" placeholder="Firstname">
         <input type="text" id="email" placeholder="Email">
         <button onclick="setCookies()">Log me in</button>
     </div>
-    <h2 style="font-weight: bold; font-size: 20px; margin-top: 20px;">Cookies</h2>
-    <button onclick="showCookies()">Show the cookies</button>
 
-    <!-- JavaScript code -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <script>
-        function setCookies() {
-            const firstname = document.getElementById('firstname').value;
-            const email = document.getElementById('email').value;
-            
-            localStorage.setItem('firstname', firstname);
-            localStorage.setItem('email', email);
-
-            // Set expiration date 10 days from now
-            const expirationDate = new Date();
-            expirationDate.setDate(expirationDate.getDate() + 10);
-            const expires = expirationDate.toUTCString();
-            
-            // Set the cookies with expiration date and specific path
-            document.cookie = `firstname=${encodeURIComponent(firstname)}; expires=${expires}; path=/`;
-            document.cookie = `email=${encodeURIComponent(email)}; expires=${expires}; path=/`;
-
-            // Show welcome message or form
-            showWelcomeMessageOrForm();
-        }
-
-        function showCookies() {
-            const cookiesParagraph = document.createElement('p');
-            const firstnameCookie = localStorage.getItem('firstname');
-            const emailCookie = localStorage.getItem('email');
-            
-            cookiesParagraph.textContent = `Cookies:\nFirstname: ${firstnameCookie ? firstnameCookie : 'Not set'} - Email: ${emailCookie ? emailCookie : 'Not set'}`;
-            document.body.appendChild(cookiesParagraph);
-        }
-
         function showForm() {
-            const welcomeMessage = document.getElementById('welcomeMessage');
-            if (welcomeMessage) {
-                welcomeMessage.remove();
-            }
-            document.getElementById('loginForm').style.display = 'block';
+            hideWelcomeMessage();
+            document.getElementById('login-form').style.display = 'block';
         }
 
         function hideForm() {
-            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('login-form').style.display = 'none';
         }
 
         function deleteCookiesAndShowForm() {
-            document.cookie = 'firstname=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-            document.cookie = 'email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-            localStorage.removeItem('firstname');
-            localStorage.removeItem('email');
+            Cookies.remove('firstname');
+            Cookies.remove('email');
             showForm();
         }
 
         function showWelcomeMessageOrForm() {
-            const firstname = localStorage.getItem('firstname');
+            const firstname = Cookies.get('firstname');
             if (firstname) {
-                document.body.innerHTML = `<h1>Welcome ${firstname} <span style="font-weight: normal; font-style: italic; margin-left: 10px;"><a href="#" onclick="deleteCookiesAndShowForm()">logout</a></span></h1>`;
+                const welcomeMessage = document.createElement('h1');
+                welcomeMessage.textContent = `Welcome: ${firstname} `;
+                const logoutLink = document.createElement('a');
+                logoutLink.textContent = '(logout)';
+                logoutLink.style.fontWeight = 'normal';
+                logoutLink.style.fontStyle = 'italic';
+                logoutLink.style.marginLeft = '10px';
+                logoutLink.href = '#';
+                logoutLink.addEventListener('click', deleteCookiesAndShowForm);
+                welcomeMessage.appendChild(logoutLink);
+                document.body.innerHTML = '';
+                document.body.appendChild(welcomeMessage);
             } else {
                 showForm();
             }
         }
 
-        // Show welcome message or form on page load
-        showWelcomeMessageOrForm();
+        function setCookies() {
+            const firstname = document.getElementById('firstname').value;
+            const email = document.getElementById('email').value;
+
+            Cookies.set('firstname', firstname);
+            Cookies.set('email', email);
+
+            showWelcomeMessageOrForm();
+        }
+
+        function hideWelcomeMessage() {
+            const welcomeMessage = document.querySelector('h1');
+            if (welcomeMessage) {
+                welcomeMessage.style.display = 'none';
+            }
+        }
+
+        window.onload = showWelcomeMessageOrForm;
     </script>
 </body>
 </html>
