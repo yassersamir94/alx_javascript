@@ -1,49 +1,40 @@
-// @ts-nocheck
-const passwordForm = document.getElementById('passwordForm')
-const errorElement = document.getElementById('error')
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('passwordForm');
+  const errorElement = document.getElementById('error');
 
-passwordForm.addEventListener('submit', function (event) {
-  event.preventDefault()
-  const password = document.getElementById('password').value
+  form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const passwordInput = document.getElementById('password').value;
+      if (validatePassword(passwordInput)) {
+          form.submit();
+      }
+  });
 
-  const errors = validatePassword(password)
+  function validatePassword(password) {
+      const errors = [];
 
-  if (errors.length === 0) {
-    errorElement.textContent = ''
-    passwordForm.submit()
-  } else {
-    errorElement.innerHTML = `<ul>${errors
-      .map((error) => `<li>${error}</li>`)
-      .join('')}</ul>`
+      if (password.length < 8) {
+          errors.push("Password must be at least 8 characters long.");
+      }
+      if (!password.match(/[A-Z]/)) {
+          errors.push("Password must contain at least one uppercase letter.");
+      }
+      if (!password.match(/[a-z]/)) {
+          errors.push("Password must contain at least one lowercase letter.");
+      }
+      if (!password.match(/[0-9]/)) {
+          errors.push("Password must contain at least one numeric digit.");
+      }
+      if (!password.match(/[!@#$%^&*]/)) {
+          errors.push("Password must contain at least one special character (!@#$%^&*).");
+      }
+
+      if (errors.length > 0) {
+          errorElement.innerText = errors.join('\n');
+          return false;
+      }
+
+      errorElement.innerText = '';
+      return true;
   }
-})
-
-function validatePassword(password) {
-  const errors = []
-
-  const lengthRegex = /.{8,}/
-  const uppercaseRegex = /[A-Z]/
-  const lowercaseRegex = /[a-z]/
-  const digitRegex = /[0-9]/
-  const specialCharRegex = /[!@#$%^&*]/
-
-  if (!lengthRegex.test(password)) {
-    errors.push('Password must be at least 8 characters long.')
-  }
-  if (!uppercaseRegex.test(password)) {
-    errors.push('Password must contain at least one uppercase letter.')
-  }
-  if (!lowercaseRegex.test(password)) {
-    errors.push('Password must contain at least one lowercase letter.')
-  }
-  if (!digitRegex.test(password)) {
-    errors.push('Password must contain at least one numeric digit.')
-  }
-  if (!specialCharRegex.test(password)) {
-    errors.push(
-      'Password must contain at least one special character (!@#$%^&*).'
-    )
-  }
-
-  return errors
-}
+});
